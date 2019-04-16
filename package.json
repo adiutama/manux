@@ -1,0 +1,22 @@
+{
+  "name": "manux",
+  "version": "0.1.0",
+  "description": "Manage Tmux Session",
+  "main": "command/manux.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "manux": "bin/manux"
+  },
+  "author": "Adi Utama",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.20.0",
+    "lodash": "^4.17.11",
+    "untildify": "^3.0.3",
+    "uuid": "^3.3.2",
+    "xdg-basedir": "^3.0.0",
+    "yaml": "^1.5.0"
+  }
+}

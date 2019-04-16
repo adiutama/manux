@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+const app = require('commander')
+const Project = require('../core/project')
+const { log } = console
+
+/**
+ * @type {Project}
+ */
+const project = Project.getInstance()
+
+/**
+ * Command action
+ *
+ * @param {string} name
+ */
+const action = name => {
+  project.add(name)
+
+  log('')
+  log('Done!')
+}
+
+app
+  .action(action)
+  .parse(process.argv)

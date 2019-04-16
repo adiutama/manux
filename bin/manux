@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+const app = require('commander')
+const Config = require('../core/config')
+
+/**
+ * @type {Config}
+ */
+const config = Config.getInstance()
+
+app
+  .version(config.get('version'), '-v, --version')
+  .command('ls', 'List all project')
+  .command('add <name>', 'Add new project')
+  .command('rm <name>', 'Remove project')
+  .parse(process.argv)

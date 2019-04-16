@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+const app = require('commander')
+const Project = require('../core/project')
+const { log } = console
+
+/**
+ * @type {Project}
+ */
+const project = Project.getInstance()
+
+/**
+ * Command action
+ */
+const action = () => {
+  const list = project.list()
+
+  log('')
+
+  if (list.length <= 0) {
+    log('No project available');
+
+    return
+  }
+
+  log('List of projects:')
+
+  list.forEach(({ location }, key) => {
+    log(`${key + 1}. ${location}`)
+  })
+}
+
+app
+  .action(action)
+  .parse(process.argv)
