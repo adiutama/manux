@@ -91,14 +91,12 @@ class Project {
     const config = path.join(this.storage, `${id}.yml`)
 
     const content = {
-      root: location,
+      session_name: name,
+      start_directory: location,
       windows: this.template,
     }
 
-    this.data.push({
-      location,
-      config,
-    })
+    this.data.push({ location, config })
 
     try {
       fs.writeFileSync(
@@ -116,10 +114,10 @@ class Project {
    * @param {string} name
    */
   rm(name) {
-    const item = this.get(name)
+    const { location, config } = this.get(name)
 
     try {
-      fs.unlinkSync(item.config)
+      fs.unlinkSync(config)
     } catch(e) { }
 
     remove(this.data, { location })
@@ -175,7 +173,7 @@ Project.getInstance = opt => {
       projectDir: config.get('projectDir'),
       template: [
         {
-          editor: null,
+          window_name: 'editor',
           focus: true,
           panes: [
             'e .'

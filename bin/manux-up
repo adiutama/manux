@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+const app = require('commander')
+const exec = require('kexec')
+const { log } = console
+
+const Project = require('../core/project')
+
+/**
+ * @type {Project}
+ */
+const project = Project.getInstance()
+
+/**
+ * Command action
+ *
+ * @param {string} name
+ */
+const action = name => {
+  const { config } = project.get(name)
+
+  exec(`tmuxp load ${config}`)
+}
+
+app
+  .action(action)
+  .parse(process.argv)
+
