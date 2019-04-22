@@ -13,7 +13,14 @@ const Config = require('../core/config')
 const config = Config.getInstance()
 
 class Project {
-  constructor({ source, storage, projectDir }) {
+  /**
+   * @params {Object} opts
+   * @params {string} opts.source
+   * @params {string} opts.storage
+   * @params {string} opts.projectDir
+   * @params {Object} opts.template
+   */
+  constructor({ source, storage, projectDir, template }) {
     /**
      * @type {string}
      */
@@ -37,9 +44,7 @@ class Project {
     /**
      * @type {Object}
      */
-    this.template = {
-      name: 'hehe'
-    }
+    this.template = template
 
     // Make sure storage directory is exists
     try {
@@ -52,7 +57,7 @@ class Project {
   /**
    * Return all project list
    *
-   * @param {Object[]}
+   * @return {Object[]}
    */
   list() {
     return this.data.map(
@@ -64,13 +69,31 @@ class Project {
   }
 
   /**
+   * Get one project object
+   *
+   * @param {string} name
+   * @return {Object}
+   */
+  get(name) {
+    const location = path.join(this.projectDir, name)
+
+    return find(this.data, { location })
+  }
+
+  /**
    * Add new project to the list
    *
    * @param {string} name
    */
   add(name) {
+    const id = uuid()
     const location = path.join(this.projectDir, name)
-    const config = path.join(this.storage, `${uuid()}.yml`)
+    const config = path.join(this.storage, `${id}.yml`)
+
+    const content = {
+      root: location,
+      windows: this.template,
+    }
 
     this.data.push({
       location,
@@ -80,7 +103,7 @@ class Project {
     try {
       fs.writeFileSync(
         config,
-        yaml.stringify(this.template)
+        yaml.stringify(content)
       )
     } catch(e) { }
 
@@ -93,8 +116,7 @@ class Project {
    * @param {string} name
    */
   rm(name) {
-    const location = path.join(this.projectDir, name)
-    const item = find(this.data, { location })
+    const item = this.get(name)
 
     try {
       fs.unlinkSync(item.config)
@@ -150,7 +172,22 @@ Project.getInstance = opt => {
     instance = new Project({
       source: 'project.yml',
       storage: 'storage',
-      projectDir: config.get('projectDir')
+      projectDir: config.get('projectDir'),
+      template: [
+        {
+          editor: null,
+          focus: true,
+          panes: [
+            'e .'
+          ],
+        },
+        {
+          window_name: 'shell',
+          panes: [
+            null
+          ]
+        }
+      ]
     })
 
     instance.load()

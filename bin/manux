@@ -13,4 +13,5 @@ app
   .command('ls', 'List all project')
   .command('add <name>', 'Add new project')
   .command('rm <name>', 'Remove project')
+  .command('edit <name>', 'Edit project')
   .parse(process.argv)
